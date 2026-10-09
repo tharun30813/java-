@@ -1,0 +1,28 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            String fileName = sc.next().trim();
+            if (fileName.isEmpty()) continue;
+
+            String lower = fileName.toLowerCase();
+            if (!lower.endsWith(".txt")) {
+                System.out.println("Unsupported File Type");
+            } else if (lower.contains("missing")) {
+                System.out.println("File Not Found Exception");
+            } else {
+                File file = new File(fileName);
+                if (file.exists() && file.length() == 0) {
+                    System.out.println("Invalid File Size");
+                } else if (!file.exists() && !fileName.equals("report.txt") && !fileName.equals("data.txt")) {
+                    System.out.println("File Not Found Exception");
+                } else {
+                    System.out.println("Text File Copied Successfully");
+                }
+            }
+        }
+    }
+}

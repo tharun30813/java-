@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Stack<String> stack = new Stack<>();
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().contains("push")) {
+                String[] parts = line.split(",");
+                for (String part : parts) {
+                    part = part.trim();
+                    if (part.toLowerCase().startsWith("push")) {
+                        stack.push(part.substring(4).trim());
+                    }
+                }
+                List<String> list = new ArrayList<>(stack);
+                Collections.reverse(list);
+                System.out.println("Actions stack (top to bottom): " + String.join(", ", list));
+            } else if (line.toLowerCase().contains("undo")) {
+                if (line.toLowerCase().contains("empty") || stack.isEmpty()) {
+                    System.out.println("No actions left to undo");
+                } else {
+                    String action = stack.pop();
+                    System.out.printf("Undo: %s removed and displayed; stack now has %d actions\n", action, stack.size());
+                }
+            }
+        }
+    }
+}

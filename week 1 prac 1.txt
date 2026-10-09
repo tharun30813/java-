@@ -1,0 +1,62 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        if (!sc.hasNext()) return;
+        String line = sc.nextLine();
+        int n;
+        List<Integer> marks = new ArrayList<>();
+        if (line.contains("N") || line.contains("=")) {
+            String[] parts = line.split("=");
+            n = Integer.parseInt(parts[1].trim());
+            while (marks.size() < n && sc.hasNextInt()) {
+                marks.add(sc.nextInt());
+            }
+        } else {
+            Scanner lineSc = new Scanner(line);
+            n = lineSc.nextInt();
+            while (lineSc.hasNextInt()) {
+                marks.add(lineSc.nextInt());
+            }
+            while (marks.size() < n && sc.hasNextInt()) {
+                marks.add(sc.nextInt());
+            }
+        }
+
+        List<Character> grades = new ArrayList<>();
+        int countA = 0, countB = 0, countC = 0, countD = 0, countF = 0;
+        int sum = 0;
+
+        for (int m : marks) {
+            sum += m;
+            if (m >= 90 && m <= 100) {
+                grades.add('A');
+                countA++;
+            } else if (m >= 80 && m <= 89) {
+                grades.add('B');
+                countB++;
+            } else if (m >= 70 && m <= 79) {
+                grades.add('C');
+                countC++;
+            } else if (m >= 60 && m <= 69) {
+                grades.add('D');
+                countD++;
+            } else {
+                grades.add('F');
+                countF++;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Grades: ");
+        for (int i = 0; i < grades.size(); i++) {
+            sb.append(grades.get(i));
+            if (i < grades.size() - 1) sb.append(" ");
+        }
+        System.out.println(sb.toString());
+        System.out.println("A=" + countA + ", B=" + countB + ", C=" + countC + ", D=" + countD + ", F=" + countF);
+        double avg = (double) sum / n;
+        System.out.printf(Locale.US, "Average = %.1f\n", avg);
+    }
+}

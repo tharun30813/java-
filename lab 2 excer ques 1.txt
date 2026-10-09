@@ -1,0 +1,78 @@
+import java.util.*;
+import java.util.regex.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder fullInput = new StringBuilder();
+        while (sc.hasNextLine()) {
+            fullInput.append(sc.nextLine()).append("\n");
+        }
+        String input = fullInput.toString().trim();
+        if (input.isEmpty()) return;
+
+        String customerName = "";
+        String feedback = "";
+        String keyword = "";
+
+        if (input.contains("Feedback:")) {
+            Matcher mCust = Pattern.compile("Customer:\\s*([^,\n]+)").matcher(input);
+            if (mCust.find()) customerName = mCust.group(1).trim();
+
+            Matcher mFeed = Pattern.compile("Feedback:\\s*\"([^\"]*)\"").matcher(input);
+            if (mFeed.find()) {
+                feedback = mFeed.group(1);
+            } else {
+                Matcher mFeed2 = Pattern.compile("Feedback:\\s*([^,\n]+)").matcher(input);
+                if (mFeed2.find()) feedback = mFeed2.group(1).trim();
+            }
+
+            Matcher mKey = Pattern.compile("Keyword:\\s*\"?([^\"\n,]+)\"?").matcher(input);
+            if (mKey.find()) keyword = mKey.group(1).trim();
+        } else {
+            String[] lines = input.split("\n");
+            if (lines.length >= 1) customerName = lines[0].trim();
+            if (lines.length >= 2) feedback = lines[1].trim();
+            if (lines.length >= 3) keyword = lines[2].trim();
+            if (feedback.startsWith("\"") && feedback.endsWith("\"") && feedback.length() >= 2) {
+                feedback = feedback.substring(1, feedback.length() - 1);
+            }
+            if (keyword.startsWith("\"") && keyword.endsWith("\"") && keyword.length() >= 2) {
+                keyword = keyword.substring(1, keyword.length() - 1);
+            }
+        }
+
+        if (feedback.isEmpty() || feedback.length() > 500) {
+            System.out.println("Invalid Feedback Message");
+            return;
+        }
+
+        int charCount = feedback.length();
+        String[] words = feedback.trim().split("\\s+");
+        int wordCount = words.length;
+
+        int keywordCount = 0;
+        String lowerFeedback = feedback.toLowerCase();
+        String lowerKeyword = keyword.toLowerCase();
+
+        for (String w : words) {
+            String cleanW = w.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+            if (cleanW.equals(lowerKeyword)) {
+                keywordCount++;
+            }
+        }
+        if (keywordCount == 0 && !lowerKeyword.isEmpty()) {
+            int idx = 0;
+            while ((idx = lowerFeedback.indexOf(lowerKeyword, idx)) != -1) {
+                keywordCount++;
+                idx += lowerKeyword.length();
+            }
+        }
+
+        if (keywordCount > 0) {
+            System.out.printf("Characters = %d, Words = %d, Keyword Found = %d\n", charCount, wordCount, keywordCount);
+        } else {
+            System.out.printf("Characters = %d, Words = %d, Keyword Not Found\n", charCount, wordCount);
+        }
+    }
+}

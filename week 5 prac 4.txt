@@ -1,0 +1,43 @@
+import java.util.*;
+
+interface Payment {
+    void processPayment();
+}
+
+class UPIPayment implements Payment {
+    public void processPayment() {
+        System.out.println("Payment Successful");
+    }
+}
+
+class CardPayment implements Payment {
+    public void processPayment() {
+        System.out.println("Payment Successful");
+    }
+}
+
+class NetBankingPayment implements Payment {
+    public void processPayment() {
+        System.out.println("Payment Successful");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String mode = sc.nextLine().trim();
+            if (mode.isEmpty()) continue;
+
+            if (mode.equalsIgnoreCase("UPI")) {
+                new UPIPayment().processPayment();
+            } else if (mode.equalsIgnoreCase("Credit Card") || mode.equalsIgnoreCase("Debit Card")) {
+                new CardPayment().processPayment();
+            } else if (mode.equalsIgnoreCase("Net Banking") || mode.equalsIgnoreCase("NetBanking")) {
+                new NetBankingPayment().processPayment();
+            } else {
+                System.out.println("Invalid Payment Mode");
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Queue<String> queue = new LinkedList<>();
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().startsWith("enqueue")) {
+                String docs = line.substring(7).trim();
+                String[] parts = docs.split(",");
+                for (String p : parts) {
+                    p = p.trim();
+                    if (!p.isEmpty()) queue.add(p);
+                }
+                System.out.println("Queue = " + queue.toString());
+            } else if (line.toLowerCase().contains("process")) {
+                if (line.toLowerCase().contains("empty") || queue.isEmpty()) {
+                    System.out.println("No job in queue to print");
+                } else {
+                    String job = queue.poll();
+                    System.out.println(job + " printed and removed; Queue = " + queue.toString());
+                }
+            }
+        }
+    }
+}

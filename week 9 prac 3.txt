@@ -1,0 +1,49 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.equalsIgnoreCase("Single Salary")) {
+                System.out.println("Same Salary Displayed");
+                continue;
+            }
+            if (line.toLowerCase().contains("salary = -") || line.contains("-")) {
+                System.out.println("Invalid Salary");
+                continue;
+            }
+
+            String[] parts = line.split(",");
+            List<Double> salaries = new ArrayList<>();
+            boolean invalid = false;
+
+            for (String p : parts) {
+                String clean = p.replaceAll("[^0-9.]", "").trim();
+                if (!clean.isEmpty()) {
+                    double s = Double.parseDouble(clean);
+                    if (s <= 0) {
+                        invalid = true;
+                        break;
+                    }
+                    salaries.add(s);
+                }
+            }
+
+            if (invalid) {
+                System.out.println("Invalid Salary");
+            } else if (salaries.size() == 1) {
+                System.out.println("Same Salary Displayed");
+            } else if (!salaries.isEmpty()) {
+                Collections.sort(salaries, Collections.reverseOrder());
+                List<String> formatted = new ArrayList<>();
+                for (double s : salaries) {
+                    formatted.add(String.valueOf((long) s));
+                }
+                System.out.println(String.join(", ", formatted));
+            }
+        }
+    }
+}

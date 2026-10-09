@@ -1,0 +1,45 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String line = "";
+        if (sc.hasNextLine()) {
+            line = sc.nextLine();
+        }
+
+        String msg = "";
+        String keyword = "";
+
+        if (line.contains(",")) {
+            int commaIdx = line.lastIndexOf(',');
+            msg = line.substring(0, commaIdx).trim();
+            keyword = line.substring(commaIdx + 1).trim();
+        } else {
+            msg = line.trim();
+            if (sc.hasNextLine()) {
+                keyword = sc.nextLine().trim();
+            }
+        }
+
+        if (msg.equals("\"\"")) {
+            msg = "";
+        }
+        if (msg.startsWith("\"") && msg.endsWith("\"") && msg.length() >= 2) {
+            msg = msg.substring(1, msg.length() - 1).trim();
+        }
+        if (keyword.startsWith("\"") && keyword.endsWith("\"") && keyword.length() >= 2) {
+            keyword = keyword.substring(1, keyword.length() - 1).trim();
+        }
+
+        if (msg.isEmpty()) {
+            System.out.println("Invalid Feedback Message");
+        } else {
+            if (msg.toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println("Keyword Found");
+            } else {
+                System.out.println("Keyword Not Found");
+            }
+        }
+    }
+}

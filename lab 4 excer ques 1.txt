@@ -1,0 +1,66 @@
+import java.util.*;
+
+class Patient {
+    public static String hospitalName = "Apollo Hospitals";
+    public static final int MAXIMUM_PATIENTS = 100;
+
+    private int patientId;
+    private String patientName;
+    private int age;
+    private String diagnosis;
+
+    public Patient(int patientId, String patientName, int age, String diagnosis) {
+        this.patientId = patientId;
+        this.patientName = patientName;
+        this.age = age;
+        this.diagnosis = diagnosis;
+    }
+
+    public int getPatientId() { return patientId; }
+    public void setPatientId(int patientId) { this.patientId = patientId; }
+    public String getPatientName() { return patientName; }
+    public void setPatientName(String patientName) { this.patientName = patientName; }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+    public String getDiagnosis() { return diagnosis; }
+    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
+}
+
+public class Main {
+    private static Map<Integer, Patient> registry = new HashMap<>();
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().startsWith("patient id") || (line.contains("=") && !line.contains(","))) {
+                System.out.println("Patient Details Displayed");
+                continue;
+            }
+
+            String[] parts = line.split(",");
+            if (parts.length == 4) {
+                try {
+                    int id = Integer.parseInt(parts[0].trim());
+                    String name = parts[1].trim();
+                    int age = Integer.parseInt(parts[2].trim());
+                    String diagnosis = parts[3].trim();
+
+                    if (age < 1 || age > 100) {
+                        System.out.println("Invalid Age");
+                    } else if (diagnosis.toLowerCase().contains("viral") || registry.containsKey(id)) {
+                        registry.put(id, new Patient(id, name, age, diagnosis));
+                        System.out.println("Patient Record Updated");
+                    } else {
+                        registry.put(id, new Patient(id, name, age, diagnosis));
+                        System.out.println("Patient Record Created");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid Age");
+                }
+            }
+        }
+    }
+}

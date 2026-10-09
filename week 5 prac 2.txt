@@ -1,0 +1,51 @@
+import java.util.*;
+import java.util.regex.*;
+
+class PriceCalculator {
+    public void calculatePrice(double price) {
+        System.out.printf(Locale.US, "Original Price = ₹%,d\n", (long) price);
+    }
+
+    public void calculatePrice(double price, double discount) {
+        double finalPrice = price - (price * discount / 100.0);
+        System.out.printf(Locale.US, "Final Price = ₹%,d\n", (long) finalPrice);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            double price = -1;
+            double discount = -1;
+
+            Matcher mPrice = Pattern.compile("Price\\s*=\\s*[₹]?([0-9,]+(\\.[0-9]+)?)").matcher(line);
+            if (mPrice.find()) {
+                price = Double.parseDouble(mPrice.group(1).replace(",", ""));
+            }
+
+            Matcher mDisc = Pattern.compile("Discount\\s*=\\s*([0-9,]+(\\.[0-9]+)?)\\s*%?").matcher(line);
+            if (mDisc.find()) {
+                discount = Double.parseDouble(mDisc.group(1).replace(",", ""));
+            }
+
+            if (price == -1 && discount == -1) {
+                String clean = line.replaceAll("[^0-9.]", " ").trim();
+                String[] nums = clean.split("\\s+");
+                if (nums.length >= 1 && !nums[0].isEmpty()) price = Double.parseDouble(nums[0]);
+                if (nums.length >= 2 && !nums[1].isEmpty()) discount = Double.parseDouble(nums[1]);
+            }
+
+            if (price <= 0) {
+                System.out.println("Invalid Product Price");
+            } else if (discount >= 0) {
+                new PriceCalculator().calculatePrice(price, discount);
+            } else {
+                new PriceCalculator().calculatePrice(price);
+            }
+        }
+    }
+}

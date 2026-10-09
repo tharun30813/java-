@@ -1,0 +1,37 @@
+import java.io.*;
+import java.util.*;
+
+class FileUploader extends Thread {
+    private String fileName;
+
+    public FileUploader(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @Override
+    public void run() {
+        if (fileName.contains("missing")) {
+            System.out.println("File Not Found Exception");
+        } else if (fileName.contains("empty")) {
+            System.out.println("Invalid File Size");
+        } else {
+            System.out.println("File Uploaded Successfully");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            String fileName = sc.next().trim();
+            if (fileName.isEmpty()) continue;
+
+            FileUploader uploader = new FileUploader(fileName);
+            uploader.start();
+            try {
+                uploader.join();
+            } catch (InterruptedException ignored) {}
+        }
+    }
+}

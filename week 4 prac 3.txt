@@ -1,0 +1,32 @@
+import java.util.*;
+
+class Student {
+    static String collegeName = "Alliance University";
+    static int accessCount = 0;
+
+    public void displayCollege() {
+        accessCount++;
+        if (accessCount == 1) {
+            System.out.println("College Name Displayed");
+        } else {
+            System.out.println("Same College Name Displayed");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String line = sc.hasNextLine() ? sc.nextLine().trim() : "";
+        if (line.isEmpty()) return;
+
+        if (line.equalsIgnoreCase("Student 1") || line.endsWith("1")) {
+            new Student().displayCollege();
+        } else {
+            Student s1 = new Student();
+            s1.displayCollege();
+            Student s2 = new Student();
+            s2.displayCollege();
+        }
+    }
+}

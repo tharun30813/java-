@@ -1,0 +1,35 @@
+import java.util.*;
+import java.util.regex.*;
+
+class LowBalanceException extends Exception {
+    public LowBalanceException(String message) {
+        super(message);
+    }
+}
+
+public class Main {
+    public static void checkBalance(double balance) throws LowBalanceException {
+        if (balance < 1000) {
+            throw new LowBalanceException("LowBalanceException");
+        } else {
+            System.out.println("Valid Balance");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder fullInput = new StringBuilder();
+        while (sc.hasNextLine()) {
+            fullInput.append(sc.nextLine()).append(" ");
+        }
+        Matcher m = Pattern.compile("\\d+(\\.\\d+)?").matcher(fullInput.toString());
+        if (!m.find()) return;
+        double balance = Double.parseDouble(m.group());
+
+        try {
+            checkBalance(balance);
+        } catch (LowBalanceException e) {
+            System.out.println("LowBalanceException");
+        }
+    }
+}

@@ -1,0 +1,79 @@
+import java.util.*;
+import java.util.regex.*;
+
+class DailyLimitExceededException extends Exception {
+    public DailyLimitExceededException(String message) {
+        super(message);
+    }
+}
+
+class InsufficientBalanceException extends Exception {
+    public InsufficientBalanceException(String message) {
+        super(message);
+    }
+}
+
+class InvalidAmountException extends Exception {
+    public InvalidAmountException(String message) {
+        super(message);
+    }
+}
+
+public class Main {
+    public static void validateTransaction(double balance, double withdrawal)
+            throws InvalidAmountException, InsufficientBalanceException, DailyLimitExceededException {
+        if (withdrawal <= 0) {
+            throw new InvalidAmountException("Invalid Amount Exception");
+        }
+        if (withdrawal > 20000) {
+            throw new DailyLimitExceededException("DailyLimitExceededException");
+        }
+        if (withdrawal > balance) {
+            throw new InsufficientBalanceException("Insufficient Balance Exception");
+        }
+        System.out.println("Transaction Successful");
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            double balance = -1;
+            double withdrawal = 0;
+
+            Matcher mBal = Pattern.compile("Balance:\\s*[₹]?([0-9,]+(\\.[0-9]+)?)").matcher(line);
+            if (mBal.find()) {
+                balance = Double.parseDouble(mBal.group(1).replace(",", ""));
+            }
+
+            Matcher mWith = Pattern.compile("Withdrawal:\\s*-?[₹]?([0-9,]+(\\.[0-9]+)?)").matcher(line);
+            if (mWith.find()) {
+                String match = mWith.group(0);
+                boolean isNeg = match.contains("-");
+                double val = Double.parseDouble(mWith.group(1).replace(",", ""));
+                withdrawal = isNeg ? -val : val;
+            }
+
+            if (balance == -1) {
+                String clean = line.replaceAll("[^0-9.\\-]", " ").trim();
+                String[] parts = clean.split("\\s+");
+                if (parts.length >= 2) {
+                    balance = Double.parseDouble(parts[0]);
+                    withdrawal = Double.parseDouble(parts[1]);
+                }
+            }
+
+            try {
+                validateTransaction(balance, withdrawal);
+            } catch (InvalidAmountException e) {
+                System.out.println("Invalid Amount Exception");
+            } catch (InsufficientBalanceException e) {
+                System.out.println("Insufficient Balance Exception");
+            } catch (DailyLimitExceededException e) {
+                System.out.println("DailyLimitExceededException");
+            }
+        }
+    }
+}

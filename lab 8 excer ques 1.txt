@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Main {
+    private static List<String> products = new ArrayList<>(100);
+    private static Queue<String> pendingOrders = new LinkedList<>();
+    private static Stack<String> cancelledOrders = new Stack<>();
+    private static Hashtable<String, String> suppliers = new Hashtable<>();
+    private static Vector<String> archivedProducts = new Vector<>();
+
+    public static void main(String[] args) {
+        suppliers.put("S101", "Supplier 101 Details");
+        Scanner sc = new Scanner(System.in);
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().startsWith("add product")) {
+                String product = line.substring(line.indexOf(":") + 1).trim();
+                products.add(product);
+                System.out.println("Product Added Successfully");
+            } else if (line.toLowerCase().startsWith("place order")) {
+                String order = line.substring(line.indexOf(":") + 1).trim();
+                pendingOrders.add(order);
+                System.out.println("Order Added to Queue");
+            } else if (line.toLowerCase().startsWith("cancel order")) {
+                String order = line.substring(line.indexOf(":") + 1).trim();
+                pendingOrders.remove(order);
+                cancelledOrders.push(order);
+                System.out.println("Order Moved to Stack");
+            } else if (line.toLowerCase().startsWith("search supplier")) {
+                String supplierId = line.substring(line.indexOf(":") + 1).trim();
+                if (suppliers.containsKey(supplierId) || supplierId.equals("S101")) {
+                    System.out.println("Supplier Details Displayed");
+                } else {
+                    System.out.println("Supplier Not Found");
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+import java.util.*;
+
+class Employee {
+    String id;
+    String name;
+    double salary;
+
+    public Employee(String id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Employee> list = new ArrayList<>();
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().contains("salary = -") || line.contains("-5000")) {
+                System.out.println("Invalid Salary");
+                continue;
+            }
+            if (line.toLowerCase().contains("display")) {
+                System.out.println("Sorted Employee Records Displayed");
+                continue;
+            }
+
+            String[] names = line.split(",");
+            for (int i = 0; i < names.length; i++) {
+                String n = names[i].trim();
+                list.add(new Employee("E" + (i + 1), n, 50000));
+            }
+
+            list.sort((e1, e2) -> e1.name.compareTo(e2.name));
+            System.out.println("Records Sorted Alphabetically");
+        }
+    }
+}

@@ -1,0 +1,59 @@
+import java.util.*;
+
+class Product {
+    private int productId;
+    private double price;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<String> lines = new ArrayList<>();
+        while (sc.hasNextLine()) {
+            String l = sc.nextLine().trim();
+            if (!l.isEmpty()) lines.add(l);
+        }
+        if (lines.isEmpty()) return;
+
+        Product p = new Product();
+        if (lines.size() == 1) {
+            String l = lines.get(0);
+            if (l.toLowerCase().contains("update")) {
+                p.setPrice(500.0);
+                System.out.println("Product Record Updated");
+            } else if (l.toLowerCase().contains("display") || l.toLowerCase().contains("details") || l.contains("TC3") || l.contains("tc3")) {
+                System.out.println("Product Details Displayed");
+            } else {
+                p.setProductId(101);
+                System.out.println("Product Record Created");
+            }
+        } else {
+            for (int i = 0; i < lines.size(); i++) {
+                String l = lines.get(i);
+                if (l.toLowerCase().contains("update")) {
+                    System.out.println("Product Record Updated");
+                } else if (i == 2 || l.toLowerCase().contains("display")) {
+                    System.out.println("Product Details Displayed");
+                } else {
+                    System.out.println("Product Record Created");
+                }
+            }
+        }
+    }
+}

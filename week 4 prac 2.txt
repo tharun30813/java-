@@ -1,0 +1,28 @@
+import java.util.*;
+
+class Employee {
+    private int empId;
+    private String name;
+
+    public void updateDetails(int empId, String name) {
+        this.empId = empId;
+        this.name = name;
+        System.out.println("Employee Record Updated");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        if (!sc.hasNextLine()) return;
+        String line = sc.nextLine().trim();
+        if (line.isEmpty()) return;
+
+        String[] parts = line.split(",");
+        int id = Integer.parseInt(parts[0].trim());
+        String name = parts[1].trim();
+
+        Employee emp = new Employee();
+        emp.updateDetails(id, name);
+    }
+}

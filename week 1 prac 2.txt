@@ -1,0 +1,55 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        if (!sc.hasNext()) return;
+        List<Integer> list = new ArrayList<>();
+        while (sc.hasNext()) {
+            if (sc.hasNextInt()) {
+                list.add(sc.nextInt());
+            } else {
+                String token = sc.next();
+                token = token.replaceAll("[^0-9\\-]", " ").trim();
+                if (!token.isEmpty()) {
+                    for (String part : token.split("\\s+")) {
+                        if (!part.isEmpty()) {
+                            try {
+                                list.add(Integer.parseInt(part));
+                            } catch (NumberFormatException ignored) {}
+                        }
+                    }
+                }
+            }
+        }
+        if (list.isEmpty()) return;
+        int n = list.get(0);
+        List<Integer> arr = new ArrayList<>();
+        for (int i = 1; i <= n && i < list.size(); i++) {
+            arr.add(list.get(i));
+        }
+        if (arr.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                arr.add(list.get(i));
+            }
+        }
+
+        Integer first = null;
+        Integer second = null;
+
+        for (int val : arr) {
+            if (first == null || val > first) {
+                second = first;
+                first = val;
+            } else if (val < first && (second == null || val > second)) {
+                second = val;
+            }
+        }
+
+        if (second == null) {
+            System.out.println("Second largest element does not exist");
+        } else {
+            System.out.println("Second Largest = " + second);
+        }
+    }
+}

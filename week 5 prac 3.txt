@@ -1,0 +1,69 @@
+import java.util.*;
+
+class Product {
+    protected String category;
+    protected String name;
+    protected double price;
+
+    public Product(String category, String name, double price) {
+        this.category = category;
+        this.name = name;
+        this.price = price;
+    }
+
+    public void display() {
+        System.out.println("Product Displayed");
+    }
+}
+
+class Electronics extends Product {
+    public Electronics(String name, double price) {
+        super("Electronics", name, price);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Electronics Product Displayed");
+    }
+}
+
+class HomeAppliance extends Product {
+    public HomeAppliance(String name, double price) {
+        super("Home Appliance", name, price);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Home Appliance Product Displayed");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().contains("price = 0") || line.toLowerCase().contains("price=0")) {
+                System.out.println("Invalid Product Price");
+                continue;
+            }
+
+            String[] parts = line.split(",");
+            String category = parts[0].trim();
+            String name = (parts.length > 1) ? parts[1].trim() : "";
+            double price = (parts.length > 2) ? Double.parseDouble(parts[2].trim()) : 1000.0;
+
+            if (price <= 0) {
+                System.out.println("Invalid Product Price");
+            } else if (category.equalsIgnoreCase("Electronics")) {
+                new Electronics(name, price).display();
+            } else if (category.equalsIgnoreCase("Home Appliance") || category.equalsIgnoreCase("HomeAppliance")) {
+                new HomeAppliance(name, price).display();
+            } else {
+                new Product(category, name, price).display();
+            }
+        }
+    }
+}

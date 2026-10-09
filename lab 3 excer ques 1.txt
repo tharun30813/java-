@@ -1,0 +1,72 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNextLine()) {
+            sb.append(sc.nextLine()).append(" ");
+        }
+        String input = sb.toString().trim();
+        if (input.isEmpty()) return;
+
+        String listPart = input;
+        String searchKey = null;
+
+        if (input.contains(";")) {
+            String[] parts = input.split(";", 2);
+            listPart = parts[0].trim();
+            String searchPart = parts[1].trim();
+            if (searchPart.toLowerCase().contains("search:")) {
+                searchKey = searchPart.substring(searchPart.indexOf(":") + 1).trim();
+            } else {
+                searchKey = searchPart;
+            }
+        } else if (input.toLowerCase().contains("search:")) {
+            int idx = input.toLowerCase().indexOf("search:");
+            listPart = input.substring(0, idx).trim();
+            searchKey = input.substring(idx + 7).trim();
+        }
+
+        String[] rawNames = listPart.split(",");
+        String[] restaurants = new String[10];
+        int count = 0;
+        for (String raw : rawNames) {
+            String name = raw.trim();
+            if (!name.isEmpty() && count < 10) {
+                if (name.length() > 50) name = name.substring(0, 50);
+                restaurants[count++] = name;
+            }
+        }
+
+        if (searchKey == null || searchKey.isEmpty()) {
+            String longest = "";
+            for (int i = 0; i < count; i++) {
+                if (restaurants[i].length() > longest.length()) {
+                    longest = restaurants[i];
+                }
+            }
+            System.out.printf("Total Restaurants = %d, Longest Name = %s\n", count, longest);
+        } else {
+            boolean exactFound = false;
+            boolean caseInsensitiveFound = false;
+
+            for (int i = 0; i < count; i++) {
+                if (restaurants[i].equals(searchKey)) {
+                    exactFound = true;
+                    break;
+                } else if (restaurants[i].equalsIgnoreCase(searchKey)) {
+                    caseInsensitiveFound = true;
+                }
+            }
+
+            if (exactFound) {
+                System.out.println("Restaurant Found");
+            } else if (caseInsensitiveFound) {
+                System.out.println("Restaurant Found (Case-Insensitive Search)");
+            } else {
+                System.out.println("Restaurant Not Found");
+            }
+        }
+    }
+}

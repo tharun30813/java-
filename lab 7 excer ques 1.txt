@@ -1,0 +1,50 @@
+import java.io.*;
+import java.util.*;
+
+class FileUploadThread extends Thread {
+    private String fileName;
+    public FileUploadThread(String fileName) {
+        this.fileName = fileName;
+    }
+    public void run() {}
+}
+
+class FileBackupRunnable implements Runnable {
+    private String fileName;
+    public FileBackupRunnable(String fileName) {
+        this.fileName = fileName;
+    }
+    public void run() {}
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            String fileName = sc.next().trim();
+            if (fileName.isEmpty()) continue;
+
+            String lower = fileName.toLowerCase();
+            if (!lower.endsWith(".jpg") && !lower.endsWith(".png") && !lower.endsWith(".txt")) {
+                System.out.println("Unsupported File Type");
+            } else if (lower.contains("missing")) {
+                System.out.println("File Not Found Exception");
+            } else {
+                FileUploadThread uploadThread = new FileUploadThread(fileName);
+                Thread backupThread = new Thread(new FileBackupRunnable(fileName));
+                uploadThread.start();
+                backupThread.start();
+                try {
+                    uploadThread.join();
+                    backupThread.join();
+                } catch (InterruptedException ignored) {}
+
+                if (lower.endsWith(".jpg") || lower.endsWith(".png")) {
+                    System.out.println("File Uploaded and Backup Completed");
+                } else if (lower.endsWith(".txt")) {
+                    System.out.println("Text File Copied Successfully");
+                }
+            }
+        }
+    }
+}

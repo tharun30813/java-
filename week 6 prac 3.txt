@@ -1,0 +1,29 @@
+import java.util.*;
+import java.util.regex.*;
+
+public class Main {
+    public static void validateAge(int age) throws Exception {
+        if (age < 18) {
+            throw new Exception("Invalid Age Exception");
+        } else {
+            System.out.println("Eligible to Vote");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder fullInput = new StringBuilder();
+        while (sc.hasNextLine()) {
+            fullInput.append(sc.nextLine()).append(" ");
+        }
+        Matcher m = Pattern.compile("-?\\d+").matcher(fullInput.toString());
+        if (!m.find()) return;
+        int age = Integer.parseInt(m.group());
+
+        try {
+            validateAge(age);
+        } catch (Exception e) {
+            System.out.println("Invalid Age Exception");
+        }
+    }
+}

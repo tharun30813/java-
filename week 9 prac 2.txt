@@ -1,0 +1,36 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.equalsIgnoreCase("Empty List")) {
+                System.out.println("No Employee Records");
+                continue;
+            }
+            if (line.equalsIgnoreCase("Single Employee")) {
+                System.out.println("Same Employee Displayed");
+                continue;
+            }
+
+            String[] names = line.split(",");
+            List<String> list = new ArrayList<>();
+            for (String n : names) {
+                String trimmed = n.trim();
+                if (!trimmed.isEmpty()) list.add(trimmed);
+            }
+
+            if (list.isEmpty()) {
+                System.out.println("No Employee Records");
+            } else if (list.size() == 1) {
+                System.out.println("Same Employee Displayed");
+            } else {
+                Collections.sort(list);
+                System.out.println(String.join(", ", list));
+            }
+        }
+    }
+}

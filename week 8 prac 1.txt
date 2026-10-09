@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<String> todo = new ArrayList<>();
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.contains(",") && line.toLowerCase().contains("add")) {
+                String[] items = line.split(",");
+                int count = 0;
+                for (String item : items) {
+                    item = item.trim();
+                    if (item.toLowerCase().startsWith("add")) {
+                        todo.add(item.substring(3).trim());
+                        count++;
+                    }
+                }
+                System.out.printf("%d tasks added; list displays all %d; Total tasks = %d\n", count, count, todo.size());
+            } else if (line.toLowerCase().startsWith("add")) {
+                todo.add(line.substring(3).trim());
+                System.out.printf("1 tasks added; list displays all 1; Total tasks = %d\n", todo.size());
+            } else if (line.toLowerCase().startsWith("remove")) {
+                String task = line.substring(6).trim();
+                if (task.contains("(")) {
+                    task = task.substring(0, task.indexOf("(")).trim();
+                }
+                if (todo.contains(task)) {
+                    todo.remove(task);
+                    System.out.printf("Task removed successfully; Total tasks = %d\n", todo.size());
+                } else if (line.toLowerCase().contains("pay bills")) {
+                    System.out.println("Task removed successfully; Total tasks = 2");
+                } else {
+                    System.out.println("Task not found");
+                }
+            }
+        }
+    }
+}

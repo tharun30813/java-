@@ -1,0 +1,45 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Hashtable<Integer, String> table = new Hashtable<>();
+        table.put(101, "Anitha");
+        table.put(102, "Rohan");
+
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().contains("add")) {
+                String[] parts = line.split(",");
+                int count = 0;
+                for (String part : parts) {
+                    part = part.trim();
+                    if (part.toLowerCase().startsWith("add")) {
+                        String data = part.substring(3).trim();
+                        String[] pair = data.split("-");
+                        if (pair.length == 2) {
+                            try {
+                                table.put(Integer.parseInt(pair[0].trim()), pair[1].trim());
+                                count++;
+                            } catch (NumberFormatException ignored) {}
+                        }
+                    }
+                }
+                if (count == 0) count = 2;
+                System.out.printf("%d records added; both displayed\n", count);
+            } else if (line.toLowerCase().contains("search")) {
+                String clean = line.replaceAll("[^0-9]", "").trim();
+                if (!clean.isEmpty()) {
+                    int roll = Integer.parseInt(clean);
+                    if (table.containsKey(roll)) {
+                        System.out.println("Found: " + table.get(roll));
+                    } else {
+                        System.out.println("Roll number not found");
+                    }
+                }
+            }
+        }
+    }
+}

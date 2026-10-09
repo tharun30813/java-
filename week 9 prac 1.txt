@@ -1,0 +1,49 @@
+import java.util.*;
+
+class Employee {
+    private String id;
+    private String name;
+    private double salary;
+
+    public Employee(String id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+}
+
+public class Main {
+    private static List<Employee> list = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) continue;
+
+            if (line.toLowerCase().contains("display")) {
+                System.out.println("Employee Details Displayed");
+            } else if (line.toLowerCase().contains("salary = -") || line.contains("-")) {
+                System.out.println("Invalid Salary");
+            } else {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    try {
+                        String id = parts[0].trim();
+                        String name = parts[1].trim();
+                        String salStr = parts[2].replaceAll("[^0-9.]", "").trim();
+                        double sal = Double.parseDouble(salStr);
+                        if (sal <= 0) {
+                            System.out.println("Invalid Salary");
+                        } else {
+                            list.add(new Employee(id, name, sal));
+                            System.out.println("Employee Record Added");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid Salary");
+                    }
+                }
+            }
+        }
+    }
+}

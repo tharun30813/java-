@@ -1,0 +1,29 @@
+import java.util.*;
+import java.util.regex.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringBuilder fullInput = new StringBuilder();
+        while (sc.hasNextLine()) {
+            fullInput.append(sc.nextLine()).append(" ");
+        }
+        String input = fullInput.toString();
+        List<Integer> numbers = new ArrayList<>();
+        Matcher m = Pattern.compile("-?\\d+").matcher(input);
+        while (m.find()) {
+            numbers.add(Integer.parseInt(m.group()));
+        }
+        if (numbers.isEmpty()) return;
+
+        int maxSoFar = numbers.get(0);
+        int currentMax = numbers.get(0);
+
+        for (int i = 1; i < numbers.size(); i++) {
+            currentMax = Math.max(numbers.get(i), currentMax + numbers.get(i));
+            maxSoFar = Math.max(maxSoFar, currentMax);
+        }
+
+        System.out.println(maxSoFar);
+    }
+}
